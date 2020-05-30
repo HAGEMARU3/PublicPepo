@@ -1,0 +1,42 @@
+Option Explicit
+
+Sub EmptyDelete()
+
+  Dim syokuinretu1 As Variant
+  Dim syokuinretu2 As Variant
+
+  
+  syokuinretu1 = Worksheets("Temp").Range("Y5:Y24").Value
+  
+  Worksheets("Temp").Range("Z5:Z24").Value = syokuinretu1
+  
+  syokuinretu2 = Worksheets("Temp").Range("Z5:Z24").Value
+  
+  syokuinretu2 = ArrayEmptyDelete(syokuinretu2)
+  
+       Worksheets("Temp").Range("AB5").Resize(UBound(syokuinretu2) + 1, 1).Value = _
+          WorksheetFunction.Transpose(syokuinretu2)
+  
+End Sub
+
+Function ArrayEmptyDelete(myArray As Variant) As Variant
+
+     If Not IsArray(myArray) Then ArrayEmptyDelete = Array(): Exit Function
+     
+     Dim i As Long
+     Dim syokuinretu2 As Variant
+     Dim RowData As Variant
+     
+     ReDim syokuinretu2(UBound(myArray))
+      
+     For Each RowData In myArray
+          If IsEmpty(RowData) = False Then
+                 syokuinretu2(i) = RowData
+               i = i + 1
+          End If
+     Next
+     ReDim Preserve syokuinretu2(i - 1)
+     ArrayEmptyDelete = syokuinretu2
+     
+End Function
+  
